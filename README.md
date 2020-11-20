@@ -6,6 +6,10 @@ Install the CLI:
 
     pip3 install morning-assistant
 
+Install the json parser:
+
+    brew install jq
+
 Setup your preferences:
 
     export NAME='{your name}'
