@@ -1,0 +1,10 @@
+# Generated files
+speech.mp3
+
+# vscode
+.vscode
+
+# distribution
+build
+distribution
+*.egg-info

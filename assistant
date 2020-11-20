@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+mkdir ~/.assistant
+data=$(curl 'http://api.openweathermap.org/data/2.5/weather?q='$CITY'&appid='$WEATHER_SECRET'&units=metric')
+desc=$(jq '.weather[0].description' <<< $data)
+main=$(jq '.main' <<< $data)
+
+Ctemp=$(jq '.temp' <<< $main)
+Cfeels_like=$(jq '.feels_like' <<< $main)
+Cmin=$(jq '.temp_min' <<< $main)
+Cmax=$(jq '.temp_max' <<< $main)
+news=$(assistant.py news)
+
+temp=$(assistant.py ctof $Ctemp)
+feels_like=$(assistant.py ctof $Cfeels_like)
+min=$(assistant.py ctof $Cmin)
+max=$(assistant.py ctof $Cmax)
+
+gtts-cli "Good morning $NAME. I'm your loyal servant, GadhaBot, getting you local weather and world news. 
+Today's weather is $desc in $CITY. The current temperature is $temp degrees and it feels like $feels_like degrees.
+Today's maximum is $max degrees and the minimum is $min degrees.
+Now, to news: $news." --output ~/.assistant/speech.mp3
+afplay ~/.assistant/speech.mp3
+gtts-cli "Have a great day, $NAME" --output ~/.assistant/speech.mp3
+afplay ~/.assistant/speech.mp3
